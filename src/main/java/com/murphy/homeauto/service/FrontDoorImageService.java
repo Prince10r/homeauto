@@ -5,6 +5,7 @@ import com.murphy.homeauto.model.FrontDoorImage;
 import com.murphy.homeauto.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.concurrent.*;
  * This service is used to convert front door images into animatable images to be displayed in the front end.
  */
 @Slf4j
+@Service
 public class FrontDoorImageService {
 
     private static final int LINUX_POOL_SIZE = 2;
