@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/homeauto
     username: root
-    password: root
+    password: Jake!2045
   sql:
     init:
       platform: mysql
