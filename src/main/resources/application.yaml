@@ -2,10 +2,12 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
+    hibernate:
+      ddl-auto: none
   datasource:
     url: jdbc:mysql://localhost:3306/homeauto
     username: root
-    password: Jake!2045
+    password: root
   sql:
     init:
       platform: mysql

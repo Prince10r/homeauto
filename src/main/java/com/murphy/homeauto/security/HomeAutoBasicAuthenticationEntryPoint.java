@@ -14,9 +14,11 @@ public class HomeAutoBasicAuthenticationEntryPoint extends BasicAuthenticationEn
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.addHeader("WWW-Authenticate", "Basic realm=\"" + getRealmName() + "\"");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         PrintWriter writer = response.getWriter();
         writer.println("HTTP Status 401 - " + authException.getMessage());
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad credentials");
+
     }
 
     @Override

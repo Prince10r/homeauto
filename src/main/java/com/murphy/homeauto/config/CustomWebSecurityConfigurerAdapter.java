@@ -12,20 +12,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    private DataSource dataSource;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final HomeAutoBasicAuthenticationEntryPoint authenticationEntryPoint;
 
-    public CustomWebSecurityConfigurerAdapter(HomeAutoBasicAuthenticationEntryPoint authenticationEntryPoint) {
+    public CustomWebSecurityConfigurerAdapter(HomeAutoBasicAuthenticationEntryPoint authenticationEntryPoint, DataSource dataSource) {
         this.authenticationEntryPoint = authenticationEntryPoint;
+        this.dataSource = dataSource;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("user1Pass"))
-                .authorities("ROLE_USER");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource);
     }
 
     @Override
@@ -35,7 +42,13 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .csrf()
+                .ignoringAntMatchers("/login", "/logout")
+                .and().logout().deleteCookies("JSESSIONID").invalidateHttpSession(false);
+
+
 
         http.addFilterAfter(new CustomFilter(),
                 BasicAuthenticationFilter.class);
@@ -43,6 +56,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        //return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 }
