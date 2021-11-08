@@ -3,15 +3,12 @@ package com.murphy.homeauto.controller;
 import com.murphy.homeauto.command.CommandManager;
 import com.murphy.homeauto.model.LightSwitch;
 import com.murphy.homeauto.repository.LightSwitchRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("light")
+@RequestMapping("/light")
 public class LightController {
 
     @Resource
@@ -25,15 +22,15 @@ public class LightController {
         return lightSwitchRepository.findAll();
     }
 
-    @GetMapping("/turnOff")
+    @PutMapping("/turnOff")
     public void turnOff(@RequestParam("id")Long id){
         LightSwitch lightSwitch = lightSwitchRepository.findById(id).get();
         commandManager.send433Code(lightSwitch.getOffCode());
     }
 
-    @GetMapping("/turnOn")
-    public void turnOn(@RequestParam("id")Long id){
-        LightSwitch lightSwitch = lightSwitchRepository.findById(id).get();
+    @PutMapping("/turnOn")
+    public void turnOn(@RequestParam("id")String id){
+        LightSwitch lightSwitch = lightSwitchRepository.findById(Long.parseLong(id)).get();
         commandManager.send433Code(lightSwitch.getOnCode());
     }
 

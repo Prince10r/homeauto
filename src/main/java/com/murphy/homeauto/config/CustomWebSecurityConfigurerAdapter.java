@@ -43,10 +43,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint)
+                .and().logout().deleteCookies("JSESSIONID").invalidateHttpSession(false)
                 .and()
-                .csrf()
-                .ignoringAntMatchers("/login", "/logout")
-                .and().logout().deleteCookies("JSESSIONID").invalidateHttpSession(false);
+                .csrf().disable();
+                ///.ignoringAntMatchers("/login", "/logout");
 
 
 
