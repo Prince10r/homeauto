@@ -25,13 +25,13 @@ public class LightController {
         return lightSwitchRepository.findAll();
     }
 
-    @GetMapping("turnOff")
+    @GetMapping("/turnOff")
     public void turnOff(@RequestParam("id")Long id){
         LightSwitch lightSwitch = lightSwitchRepository.findById(id).get();
         commandManager.send433Code(lightSwitch.getOffCode());
     }
 
-    @GetMapping("turnOn")
+    @GetMapping("/turnOn")
     public void turnOn(@RequestParam("id")Long id){
         LightSwitch lightSwitch = lightSwitchRepository.findById(id).get();
         commandManager.send433Code(lightSwitch.getOnCode());
