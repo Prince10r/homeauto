@@ -1,14 +1,11 @@
 spring:
+  native:
+    verify: false
   jpa:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: none
-  datasource:
-    url: jdbc:mysql://localhost:3306/homeauto
-    username: root
-    password: root
-  sql:
+Y  sql:
     init:
       platform: mysql
       mode: always

@@ -77,6 +77,12 @@
             <artifactId>spring-integration-mqtt</artifactId>
             <version>5.5.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
         <!--dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
@@ -106,24 +112,53 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.springframework.experimental</groupId>
-                <artifactId>spring-aot-maven-plugin</artifactId>
-                <version>${spring-native.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
-                        <id>test-generate</id>
+                        <id>copy</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>test-generate</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
+                            <goal>copy</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.murphy</groupId>
+                            <artifactId>homeauto</artifactId>
+                            <version>0.0.1-SNAPSHOT</version>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>Z:\\homeauto\target</outputDirectory>
+                            <destFileName>homeauto.jar</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                    <overWriteReleases>false</overWriteReleases>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.experimental</groupId>-->
+<!--                <artifactId>spring-aot-maven-plugin</artifactId>-->
+<!--                <version>${spring-native.version}</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>test-generate</id>-->
+<!--                        <goals>-->
+<!--                            <goal>test-generate</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>generate</id>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
     <repositories>
