@@ -114,7 +114,8 @@ public class FrontDoorImageService {
                 }
             }
 
-            deleteParsedImages(imagesToDelete, currentTimeStamp);
+            moveParsedImages(imagesToDelete, currentTimeStamp);
+            //deleteParsedImages(imagesToDelete, currentTimeStamp);
             frontDoorCameraService.clearCachedImages();
             noOfImagesToConvert += frontDoorImages.size();
         }
