@@ -23,6 +23,7 @@ public class FrontDoorImageService {
 
     private static final int LINUX_POOL_SIZE = 2;
     private static final String FTP_LOCATION = "/samba/FTP";
+    private static final String IMAGE_BACKUP_LOCATION = "/samba/FrontDoor";
     private static final String FRONT_DOOR_IMAGES_LOCATION = FTP_LOCATION + "/FrontDoor";
     private static final SimpleDateFormat DATE_TIMESTAMP = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -151,6 +152,39 @@ public class FrontDoorImageService {
         String absoluteGifPath = ImageUtils.getGifWebDirectory(date) + File.separatorChar + ImageUtils.getGifImageName(frontDoorImage);
         File gifFile = new File(absoluteGifPath);
         return gifFile.exists();
+    }
+
+    private synchronized void moveParsedImages(List<FrontDoorImage> frontDoorImages, long currentTimestamp){
+        log.debug("About to delete images");
+        File ftpFolder = new File(FTP_LOCATION);
+        File frontDoorImageBackup = new File(IMAGE_BACKUP_LOCATION);
+        List<File> deletedFiles = new ArrayList<>();
+        // This deletes all folders not in the FrontDoor Images directory
+        for (File folder : Objects.requireNonNull(ftpFolder.listFiles())) {
+            if (!folder.getAbsolutePath().replaceAll("\\\\", "/").equals(FRONT_DOOR_IMAGES_LOCATION)) {
+                Collection<File> filesToDeletes = FileUtils.listFiles(folder, new String[]{"jpg"}, true);
+                for (File fileToDelete : filesToDeletes) {
+                    try {
+
+                        FileUtils.moveFileToDirectory(fileToDelete, frontDoorImageBackup, true);
+                        FileUtils.forceDelete(fileToDelete);
+                        deletedFiles.add(fileToDelete);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Delete the empty parent file
+                    if (Objects.requireNonNull(fileToDelete.getParentFile().list()).length == 0) {
+                        try {
+                            FileUtils.forceDelete(fileToDelete.getParentFile());
+                            deletedFiles.add(fileToDelete.getParentFile());
+                        } catch (IOException e) {
+                            log.error("Failed to delete file: " + fileToDelete, e);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Delete all the frontdoor images that are passed into this method and

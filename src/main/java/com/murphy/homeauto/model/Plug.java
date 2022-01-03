@@ -10,5 +10,9 @@ public class Plug {
     private Long id;
     private String name;
     private String location;
+    private String topic;
     private String description;
+    private String ipAddress;
+    private Boolean state;
+
 }

@@ -10,4 +10,7 @@ public interface PlugRepository extends CrudRepository<Plug, Long> {
 
     @Query("select * from plug p where p.name = :name")
     public Plug findByName(String name);
+
+    @Query("select * from plug p where INSTR(:topic, p.topic) > 0 ")
+    Plug findByTopic(String topic);
 }

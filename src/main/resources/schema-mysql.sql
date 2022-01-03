@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS plug
     id          INT NOT NULL auto_increment,
     name        VARCHAR(25),
     location    VARCHAR(25),
+        ip_address  VARCHAR(16),
+    state       BOOLEAN,
     description VARCHAR(2048),
     PRIMARY KEY (id)
     );

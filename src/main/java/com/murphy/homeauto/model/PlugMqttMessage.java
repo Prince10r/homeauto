@@ -32,9 +32,10 @@ public class PlugMqttMessage {
        private int sleep;
        @JsonProperty("LoadAvg")
        private int loadAvg;
+       @JsonProperty("Wifi")
+       private WifiMqttMessage wifi;
        @JsonProperty("POWER")
        private PowerState powerState;
-       private WifiMqttMessage wifi;
        @JsonProperty("ENERGY")
        private PlugEnergy plugEnergy;
 

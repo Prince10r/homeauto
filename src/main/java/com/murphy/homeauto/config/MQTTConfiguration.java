@@ -1,6 +1,8 @@
 package com.murphy.homeauto.config;
 
+import com.murphy.homeauto.model.PlugEnergy;
 import com.murphy.homeauto.model.PlugMqttMessage;
+import com.murphy.homeauto.model.PowerState;
 import com.murphy.homeauto.service.SmartPlugService;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +40,7 @@ public class MQTTConfiguration {
     String mqttPassword;
 
     @Value("${mqtt.topic.smartplug}")
-    String smartPlugTopic;
+    String[] smartPlugTopics;
 
     @Resource
     SmartPlugService smartPlugService;
@@ -64,7 +66,7 @@ public class MQTTConfiguration {
 
         MqttPahoMessageDrivenChannelAdapter adapter =
                 new MqttPahoMessageDrivenChannelAdapter(mqttServer,
-                        "homeautoClient", mqttClientFactory(), smartPlugTopic);
+                        "homeautoClient", mqttClientFactory(), smartPlugTopics);
 
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
@@ -79,7 +81,10 @@ public class MQTTConfiguration {
         return new MessageSelector() {
             @Override
             public boolean accept(Message<?> message) {
-                return message.getPayload() != null && !StringUtils.startsWithIgnoreCase("online", (String) message.getPayload());
+                System.out.println(message.getPayload());
+                return message.getPayload() != null &&
+                        !StringUtils.startsWithIgnoreCase("online", (String) message.getPayload()) &&
+                        !StringUtils.startsWithIgnoreCase("offline", (String) message.getPayload());
             }
         };
     }
@@ -99,8 +104,17 @@ public class MQTTConfiguration {
             public void handleMessage(Message<?> message) throws MessagingException {
                 PlugMqttMessage plugMqttMessage = (PlugMqttMessage) message.getPayload();
                 if(plugMqttMessage.getPlugEnergy() != null){
-                    smartPlugService.saveEnergyReading("Plug 1", plugMqttMessage.getPlugEnergy());
+                    PlugEnergy plugEnergy = plugMqttMessage.getPlugEnergy();
+                    plugEnergy.setSampleTime(plugMqttMessage.getTime());
+                    String topic = (String)message.getHeaders().get("mqtt_receivedTopic");
+                    smartPlugService.saveEnergyReading(topic, plugMqttMessage.getPlugEnergy());
+                }else{
+                    System.out.println("This is the plug state");
+                    String topic = (String)message.getHeaders().get("mqtt_receivedTopic");
+                    smartPlugService.updatePlugDetails(topic, null, PowerState.ON == plugMqttMessage.getPowerState());
                 }
+
+
             }
 
         };
