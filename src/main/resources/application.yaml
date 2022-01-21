@@ -10,10 +10,10 @@ spring:
       platform: mysql
       mode: always
 logging:
-  file: /logs/homeauto.log
+  file.name: /logs/homeauto.log
   level:
     root: INFO
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %-5level - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
