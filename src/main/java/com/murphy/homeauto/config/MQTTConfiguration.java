@@ -5,6 +5,7 @@ import com.murphy.homeauto.model.PlugMqttMessage;
 import com.murphy.homeauto.model.PowerState;
 import com.murphy.homeauto.service.SmartPlugService;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +26,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
-
-@Configuration
+//@Configuration
 public class MQTTConfiguration {
 
     @Value("${mqtt.server}")
@@ -42,7 +41,7 @@ public class MQTTConfiguration {
     @Value("${mqtt.topic.smartplug}")
     String[] smartPlugTopics;
 
-    @Resource
+    @Autowired
     SmartPlugService smartPlugService;
 
     @Bean

@@ -5,22 +5,21 @@ import com.murphy.homeauto.model.PlugEnergy;
 import com.murphy.homeauto.model.PlugUsageAnalysis;
 import com.murphy.homeauto.repository.PlugEnergyRepository;
 import com.murphy.homeauto.repository.PlugRepository;
-import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Slf4j
 @Service
 public class SmartPlugService {
-    @Resource
+    @Autowired
     PlugRepository plugRepository;
 
-    @Resource
+    @Autowired
     PlugEnergyRepository plugEnergyRepository;
 
     public void updatePlugDetails(String topic, String ipAddress, boolean state){

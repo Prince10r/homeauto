@@ -5,9 +5,9 @@ import com.murphy.homeauto.model.FrontDoorImage;
 import com.murphy.homeauto.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,9 +27,9 @@ public class FrontDoorImageService {
     private static final String FRONT_DOOR_IMAGES_LOCATION = FTP_LOCATION + "/FrontDoor";
     private static final SimpleDateFormat DATE_TIMESTAMP = new SimpleDateFormat("yyyy-MM-dd");
 
-    @Resource
+    @Autowired
     CommandManager commandManager;
-    @Resource
+    @Autowired
     FrontDoorCameraService frontDoorCameraService;
 
     public boolean createFrontDoorImage(FrontDoorImage fdi, String destinationFolder) {

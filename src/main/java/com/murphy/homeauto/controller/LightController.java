@@ -3,18 +3,18 @@ package com.murphy.homeauto.controller;
 import com.murphy.homeauto.command.CommandManager;
 import com.murphy.homeauto.model.LightSwitch;
 import com.murphy.homeauto.repository.LightSwitchRepository;
-import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/light")
 public class LightController {
 
-    @Resource
+    @Autowired
     LightSwitchRepository lightSwitchRepository;
 
-    @Resource
+    @Autowired
     CommandManager commandManager;
 
     @GetMapping

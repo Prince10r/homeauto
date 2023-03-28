@@ -1,10 +1,12 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
 spring:
   native:
     verify: false
   jpa:
     show-sql: true
-    generate-ddl: true
-    hibernate:
+    generate-ddl: true    
   sql:
     init:
       platform: mysql
